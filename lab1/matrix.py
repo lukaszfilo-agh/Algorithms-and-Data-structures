@@ -13,9 +13,6 @@ class Matrix:
             self.__rows = self.c_matrix_lst(arg)[1]
             self.__cols = self.c_matrix_lst(arg)[2]
 
-    def size(self):
-        return self.__rows, self.__cols
-
     def c_matrix_lst(self, lst):
         matrix = [0] * len(lst)
         r = len(lst)
@@ -23,6 +20,9 @@ class Matrix:
         for i in range(len(lst)):
             matrix[i] = lst[i]
         return matrix, r, c
+
+    def size(self):
+        return self.__rows, self.__cols
 
     def __add__(self, other):
         res = deepcopy(self)
@@ -36,6 +36,9 @@ class Matrix:
 
     def __getitem__(self, inx):
         return self.__matrix[inx]
+    
+    def __setitem__(self, inx, val):
+        self.__matrix[inx] = val
 
     def __str__(self) -> str:
         s = ''
@@ -49,28 +52,29 @@ class Matrix:
                     s += ' '
         return s
 
-    def print_m(self):
-        print('[')
-        for i in range(self.__rows):
-            print(self.__matrix[i])
-        print(']')
+def transpose(matrix: Matrix) -> Matrix:
+    res = Matrix((matrix.size()[1], matrix.size()[0]))
+    for i in range(matrix.size()[0]):
+        for j in range(matrix.size()[1]):
+            res[j][i] = matrix[i][j]
+    return res
 
 
-m3 = Matrix((3, 4), 5)
-m4 = Matrix((3, 4), 1)
-m = m3 + m4
+def main():
+    m1 = Matrix(
+        [[1, 0, 2],
+        [-1, 3, 1]])
 
-m.print_m()
+    m2 = Matrix(
+        [[3, 1],
+        [2, 1],
+        [1, 0]])
+    
+    m3 = Matrix((2, 3), 1)
 
-print(m)
+    print(transpose(m1))
+    #print(m1*m2)
 
-m1 = Matrix(
-    [[1, 0, 2],
-     [-1, 3, 1]]
-)
 
-m2 = Matrix(
-    [[3, 1],
-     [2, 1],
-        [1, 0]]
-)
+if __name__ == '__main__':
+    main()
