@@ -94,11 +94,13 @@ def chio_determinant(a11: float, matrix: Matrix) -> float:
             new_matrix[i][j] = det_2x2(det_m)
     return chio_determinant(n_a11, new_matrix)
 
+
 def det(matrix: Matrix):
     if matrix.size() == (2, 2):
         return det_2x2(matrix)
     else:
         return chio_determinant(1.0, matrix)
+
 
 def main():
     m = Matrix([
