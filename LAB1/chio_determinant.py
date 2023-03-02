@@ -80,9 +80,17 @@ def chio_determinant(a11: float, matrix: Matrix) -> float:
 
     if matrix.size() == (2, 2):
         return a11 * det_2x2(matrix)
-
+    
     size = matrix.size()[0]
     n_size = size - 1
+
+    if matrix[0][0] == 0:
+        for i in range(size):
+            if matrix[i][0] != 0:
+                matrix[0], matrix[i] = matrix[i], matrix[0]
+                a11 *= -1
+
+    
     n_a11 = a11 * 1 / (matrix[0][0] ** (size - 2))
 
     new_matrix = Matrix(((n_size, n_size)))
@@ -103,7 +111,7 @@ def det(matrix: Matrix):
 
 
 def main():
-    m = Matrix([
+    m1 = Matrix([
         [5, 1, 1, 2, 3],
         [4, 2, 1, 7, 3],
         [2, 1, 2, 4, 7],
@@ -111,7 +119,17 @@ def main():
         [1, 4, 7, 2, 2]
     ])
 
-    print(det(m))
+    print(det(m1))
+
+    m2 = Matrix([
+        [0, 1, 1, 2, 3],
+        [4, 2, 1, 7, 3],
+        [2, 1, 2, 4, 7],
+        [9, 1, 0, 7, 0],
+        [1, 4, 7, 2, 2]
+    ])
+
+    print(det(m2))
 
 
 if __name__ == '__main__':
