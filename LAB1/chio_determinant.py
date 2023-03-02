@@ -80,7 +80,7 @@ def chio_determinant(a11: float, matrix: Matrix) -> float:
 
     if matrix.size() == (2, 2):
         return a11 * det_2x2(matrix)
-    
+
     size = matrix.size()[0]
     n_size = size - 1
 
@@ -90,7 +90,6 @@ def chio_determinant(a11: float, matrix: Matrix) -> float:
                 matrix[0], matrix[i] = matrix[i], matrix[0]
                 a11 *= -1
 
-    
     n_a11 = a11 * 1 / (matrix[0][0] ** (size - 2))
 
     new_matrix = Matrix(((n_size, n_size)))
