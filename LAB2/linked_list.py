@@ -30,10 +30,13 @@ class Liked_List:
         self.head = data
 
     def append(self, data: Record) -> None:
-        rec = self.head
-        while rec.next.next is not None:
-            rec = rec.next
-        rec.next.next = data
+        if self.is_empty():
+            self.add(data)
+        else:
+            rec = self.head
+            while rec.next is not None:
+                rec = rec.next
+            rec.next = data
 
     def remove(self):
         if self.head is not None:
@@ -70,12 +73,12 @@ def main():
            ('UW', 'Warszawa', 1915), ('UP', 'Poznań', 1919), ('PG', 'Gdańsk', 1945)]
 
     uczelnie = Liked_List()
-    uczelnie.add(Record(uni[0]))
-    uczelnie.add(Record(uni[1]))
-    uczelnie.add(Record(uni[2]))
-    uczelnie.append(Record(uni[3]))
-    uczelnie.append(Record(uni[4]))
-    uczelnie.append(Record(uni[5]))
+    uczelnie.append(Record(uni[0]))
+    uczelnie.append(Record(uni[1]))
+    uczelnie.append(Record(uni[2]))
+    uczelnie.add(Record(uni[3]))
+    uczelnie.add(Record(uni[4]))
+    uczelnie.add(Record(uni[5]))
 
     print(uczelnie)
     print(uczelnie.lenght())
