@@ -15,11 +15,11 @@ class Liked_List:
         s = ''
         record = self.head
         while True:
-            s += '->'
+            s += '-> '
             s += str(record.data)
-            s += '\n'
             if record.next is None:
                 return s
+            s += '\n'
             record = record.next
 
     def destroy(self) -> None:
@@ -31,19 +31,21 @@ class Liked_List:
 
     def append(self, data: Record) -> None:
         rec = self.head
-        while rec.next.next is not None: 
+        while rec.next.next is not None:
             rec = rec.next
         rec.next.next = data
 
     def remove(self):
-        self.head = self.head.next
+        if self.head is not None:
+            self.head = self.head.next
 
     def remove_end(self):
-        rec = self.head
-        while rec.next.next is not None: 
-            rec = rec.next
-        rec.next = None
-            
+        if self.head is not None:
+            rec = self.head
+            while rec.next.next is not None:
+                rec = rec.next
+            rec.next = None
+
     def is_empty(self) -> bool:
         if self.head is None:
             return True
@@ -71,6 +73,21 @@ def main():
     uczelnie.add(Record(uni[0]))
     uczelnie.add(Record(uni[1]))
     uczelnie.add(Record(uni[2]))
+    uczelnie.append(Record(uni[3]))
+    uczelnie.append(Record(uni[4]))
+    uczelnie.append(Record(uni[5]))
+
+    print(uczelnie)
+    print(uczelnie.lenght())
+    uczelnie.remove()
+    print(uczelnie.get())
+    uczelnie.remove_end()
+    print(uczelnie)
+    uczelnie.destroy()
+    print(uczelnie.is_empty())
+    uczelnie.remove()
+    uczelnie.remove_end()
+
 
 if __name__ == '__main__':
     main()
