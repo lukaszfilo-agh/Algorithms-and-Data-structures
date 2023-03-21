@@ -17,6 +17,8 @@ class Doubly_Liked_List:
     def __str__(self):
         s = ''
         record = self.head
+        if record is None:
+            return '->'
         while True:
             s += '-> '
             s += str(record.data)
@@ -55,13 +57,19 @@ class Doubly_Liked_List:
 
     def remove(self):
         if self.head is not None:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = None
+                return
             self.head = self.head.next
             self.head.prev = None
         # DONE
 
     def remove_end(self):
-        # TODO ?
         if self.head is not None:
+            if self.head == self.tail:
+                self.remove()
+                return
             rec = self.head
             while rec.next.next is not None:
                 rec = rec.next
@@ -107,21 +115,12 @@ def main():
     print(uczelnie.get())
     uczelnie.remove_end()
     print(uczelnie)
-    # uczelnie.destroy()
+    uczelnie.destroy()
     print(uczelnie.is_empty())
-    # uczelnie.remove()
-    # uczelnie.remove_end()
-
-    # ucz = Doubly_Liked_List()
-    # ucz.add(Record(uni[0]))
-    # ucz.add(Record(uni[1]))
-    # ucz.add(Record(uni[3]))
-    # print(ucz, '\n')
-    # ucz.remove()
-    # print(ucz)
-    # print('glowa:', ucz.head.data)
-    # print('ogon:', ucz.tail.data)
-    # print(ucz.get())
+    uczelnie.remove()
+    uczelnie.append(Record(uni[0]))
+    uczelnie.remove_end()
+    print(uczelnie)
 
 
 if __name__ == '__main__':

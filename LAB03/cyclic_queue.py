@@ -66,25 +66,23 @@ class queue:
 
 
 def main():
-    test2()
-    test3()
-    # tablica = queue()
-    # tablica.enqueue(1)
-    # tablica.enqueue(2)
-    # tablica.enqueue(3)
-    # tablica.enqueue(4)
-    # print(tablica.dequeue())
-    # print(tablica.peek())
-    # print(tablica)
-    # tablica.enqueue(5)
-    # tablica.enqueue(6)
-    # tablica.enqueue(7)
-    # tablica.enqueue(8)
-    # print(tablica)
+    tablica = queue()
+    tablica.enqueue(1)
+    tablica.enqueue(2)
+    tablica.enqueue(3)
+    tablica.enqueue(4)
+    print(tablica.dequeue())
+    print(tablica.peek())
+    print(tablica)
+    tablica.enqueue(5)
+    tablica.enqueue(6)
+    tablica.enqueue(7)
+    tablica.enqueue(8)
+    print(tablica)
 
-    # while tablica.peek() is not None:
-    #     print(tablica.dequeue())
-    # print(tablica)
+    while tablica.peek() is not None:
+        print(tablica.dequeue())
+    print(tablica)
 
 
 def test2():
