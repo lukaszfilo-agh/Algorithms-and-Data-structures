@@ -40,20 +40,28 @@ class queue:
             self.realloc_n()
 
     def __str__(self):
-        d = self.read
+        # d = self.read
+        # s = '['
+        # while self.tab[d] is not None:
+        #     s += str(self.tab[d])
+        #     # if d != self.write - 1:
+        #     #     s += ', '
+        #     if d == self.size - 1:
+        #         d = 0
+        #     else:
+        #         d += 1
+        #     if self.tab[d] is not None:
+        #         s += ', '
+        # s += ']'
         s = '['
-        while self.tab[d] is not None:
-            s += str(self.tab[d])
-            # if d != self.write - 1:
-            #     s += ', '
-            if d == self.size - 1:
-                d = 0
+        for i in range(self.size):
+            if self.tab[i] is not None:
+                s += str(self.tab[i])
             else:
-                d += 1
-            if self.tab[d] is not None:
+                s += 'None'
+            if i != self.size - 1:
                 s += ', '
-        s += ']'
-        return s
+        return s + ']'
 
     def realloc_n(self):
         new_size = 2 * self.size
