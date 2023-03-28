@@ -35,14 +35,13 @@ class hash_list:
         self.c2 = c2
 
     def search(self, key):
-        # JAK SA KOLIZJE TO SIE PIERDOLI
         hashed_key = hash(key, self.size)
 
         if isinstance(self.tab[hashed_key], Element):
             if self.tab[hashed_key].key == key:
                 return self.tab[hashed_key]
 
-        for i in range(self.size):
+        for i in range(1, self.size):
             new_key = (hashed_key + self.c1 * i +
                        self.c2 * (i ** 2)) % self.size
             if isinstance(self.tab[new_key], Element):
@@ -58,7 +57,7 @@ class hash_list:
             if self.tab[hashed_key].key == key:
                 self.tab[hashed_key] = Element(key, value)
             else:
-                for i in range(self.size):
+                for i in range(1, self.size):
                     new_key = (hashed_key + self.c1 * i +
                                self.c2 * (i ** 2)) % self.size
                     if self.tab[new_key] is None or self.tab[new_key] == 'ERASED':
@@ -70,13 +69,12 @@ class hash_list:
                 raise NoSpace
 
     def remove(self, key):
-        # JAK SA KOLIZJE TO SIE PIERDOLI
         hashed_key = hash(key, self.size)
         if isinstance(self.tab[hashed_key], Element):
             if self.tab[hashed_key].key == key:
                 self.tab[hashed_key] = 'ERASED'
         else:
-            for i in range(self.size):
+            for i in range(1, self.size):
                 new_key = (hashed_key + self.c1 * i +
                            self.c2 * (i ** 2)) % self.size
                 if self.tab[new_key] == 'ERASED':
@@ -100,8 +98,6 @@ class hash_list:
 
 
 def test_1(c1=1, c2=0):
-    print('====TEST_1====')
-    print(f'==== c1 = {c1}, c2 = {c2} ====')
     hashed_list = hash_list(13, c1, c2)
     print(hashed_list)
     values = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
@@ -126,12 +122,9 @@ def test_1(c1=1, c2=0):
     print(hashed_list.search(31))
     hashed_list.insert('test', 'W')
     print(hashed_list)
-    print('====END====')
 
 
 def test_2(c1=1, c2=0):
-    print('====TEST_2====')
-    print(f'==== c1 = {c1}, c2 = {c2} ====')
     hashed_list = hash_list(13, c1, c2)
     values = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
               'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
@@ -141,7 +134,6 @@ def test_2(c1=1, c2=0):
         except NoSpace:
             print(f'Not enough space for {Element(13 * i, values[i - 1])}')
     print(hashed_list)
-    print('====END====')
 
 
 def main():
