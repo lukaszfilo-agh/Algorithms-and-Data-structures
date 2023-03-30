@@ -21,9 +21,8 @@ class Element:
         self.value = value
 
     def __str__(self):
-        s = '{'
-        s += f'{self.key} : {self.value}'
-        s += '}'
+        s = ''
+        s += f'{self.value}'
         return s
 
 
@@ -85,21 +84,20 @@ class hash_list:
             raise NoData
 
     def __str__(self):
-        s = '['
+        s = '{'
         for i in range(self.size):
             if self.tab[i] is None or self.tab[i] == 'ERASED':
                 s += 'None'
             else:
-                s += str(self.tab[i])
+                s += f'{self.tab[i].key} : {self.tab[i].value}'
             if i != self.size - 1:
                 s += ', '
-        s += ']'
+        s += '}'
         return s
 
 
 def test_1(c1=1, c2=0):
     hashed_list = hash_list(13, c1, c2)
-    print(hashed_list)
     values = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
               'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
     for i in range(1, 16):
