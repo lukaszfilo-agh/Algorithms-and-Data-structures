@@ -66,14 +66,69 @@ class BST:
             return
         return self.__insert(key, value, self.root)
 
-    def delete(self):
-        pass
+    def __delete(self, key, node: Node):
+        if key > node.key:
+            node.right = self.__delete(key, node.right)
+        elif key < node.key:
+            node.left = self.__delete(key, node.left)
+        else:
+            if node.right is None:
+                return node.left
+            elif node.left is None:
+                return node.right
+
+            new_node = node.right
+            while new_node.left is not None:
+                new_node = new_node.left
+
+            node.key, node.value = new_node.key, new_node.value
+            node.right = self.__delete(new_node.key, node.right)
+
+        return node
+
+    def delete(self, key):
+        return self.__delete(key, self.root)
+
+    def __print(self, node: Node):
+        if node.left is not None:
+            self.__print(node.left)
+        print(f'{node.key} {node.value}', end=', ')
+        if node.right is not None:
+            self.__print(node.right)
 
     def print(self):
-        pass
+        self.__print(self.root)
+        print()
 
-    def height(self):
-        pass
+    def __node_search(self, key, node: Node):
+        if node.key == key:
+            return node
+        elif key > node.key:
+            return self.__node_search(key, node.right)
+        elif key < node.key:
+            return self.__node_search(key, node.left)
+
+    def __height(self, node: Node):
+        if node is None:
+            return 0
+        else:
+            left = self.__height(node.left)
+            right = self.__height(node.right)
+
+            if left > right:
+                return left + 1
+            else:
+                return right + 1
+
+    def height(self, key=None):
+        if key == None:
+            key = self.root.key
+        node = self.root
+        if key != node.key:
+            new_node = self.__node_search(key, node)
+            return self.__height(new_node)
+        else:
+            return self.__height(node)
 
 
 def main():
@@ -83,7 +138,22 @@ def main():
     for key in dict:
         tree.insert(key, dict[key])
     tree.print_tree()
-    print(tree.search(50))
+    tree.print()
+    print(tree.search(24).value)
+    tree.insert(20, 'AA')
+    tree.insert(6, 'M')
+    tree.delete(62)
+    tree.insert(59, 'N')
+    tree.insert(100, 'P')
+    tree.delete(8)
+    tree.delete(15)
+    tree.insert(55, 'R')
+    tree.delete(50)
+    tree.delete(5)
+    tree.delete(24)
+    print(tree.height())
+    tree.print()
+    tree.print_tree()
 
 
 if __name__ == '__main__':
