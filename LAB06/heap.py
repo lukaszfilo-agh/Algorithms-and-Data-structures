@@ -10,7 +10,7 @@ class Element:
         return self.__priority > other.__priority
 
     def __str__(self):
-        return f'{self.__priority} : {self.__data}'
+        return f'{self.__priority}: {self.__data}'
 
 
 class Heap:
@@ -57,6 +57,8 @@ class Heap:
             self.tab[0], self.tab[-size] = self.tab[-size], self.tab[0]
             self.repair(0)
             return el
+        else:
+            return None
 
     def enqueue(self, elem: Element):
         if self.heap_size == self.tab_size():
@@ -93,8 +95,8 @@ class Heap:
             return None
 
     def print_tab(self):
-        print('{', end=' ')
-        print(*self.tab[:self.heap_size], sep=', ', end=' ')
+        print('{', end='')
+        print(*self.tab[:self.heap_size], sep=', ', end='')
         print('}')
 
     def print_tree(self, idx, lvl):
@@ -110,8 +112,8 @@ def main():
     d = 'GRYMOTYLA'
 
     heap = Heap()
-    for i in range(len(p)):
-        heap.enqueue(Element(d[i], p[i]))
+    for idx, val in enumerate(p):
+        heap.enqueue(Element(d[idx], val))
     heap.print_tree(0, 0)
     heap.print_tab()
     el = heap.dequeue()
