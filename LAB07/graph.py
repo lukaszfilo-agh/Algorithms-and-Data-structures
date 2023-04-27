@@ -30,7 +30,7 @@ class Graph_Matrix:
         for i in range(self.size()):
             for j in range(self.size()):
                 if self.matrix[i][j] != 0:
-                    edges.append((self.getVertex(i), self.getVertex(j)))
+                    edges.append((self.getVertex(i).key, self.getVertex(j).key))
         return edges
 
     def size(self) -> int:
@@ -100,7 +100,7 @@ class Graph_List:
         edges = []
         for v1 in self.neighbours.keys():
             for v2 in self.neighbours[v1]:
-                edges.append((v1, v2))
+                edges.append((v1.key, v2.key))
         return edges
 
     def size(self) -> int:
@@ -159,15 +159,15 @@ class Graph_List:
 def main():
     gm = Graph_Matrix()
     for vertex in polska.graf:
-        gm.insertEdge(vertex[0], vertex[1])
-    gm.deleteVertex('K')
-    gm.deleteEdge('W', 'E')
+        gm.insertEdge(Vertex(vertex[0]), Vertex(vertex[1]))
+    gm.deleteVertex(Vertex('K'))
+    gm.deleteEdge(Vertex('W'), Vertex('E'))
 
     gl = Graph_List()
     for vertex in polska.graf:
-        gl.insertEdge(vertex[0], vertex[1])
-    gl.deleteVertex('K')
-    gl.deleteEdge('W', 'E')
+        gl.insertEdge(Vertex(vertex[0]), Vertex(vertex[1]))
+    gl.deleteVertex(Vertex('K'))
+    gl.deleteEdge(Vertex('W'), Vertex('E'))
 
     polska.draw_map(gm.edges())
     polska.draw_map(gl.edges())
