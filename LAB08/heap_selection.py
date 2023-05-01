@@ -118,27 +118,54 @@ class Heap:
                 self.print_tree(self.left_child_idx(idx), lvl+1)
 
 
+def selection_sort(tab):
+    for i in range(len(tab)):
+        idx = i
+        for j in range(i+1, len(tab)):
+            if tab[j] < tab[idx]:
+                idx = j
+        tab[i], tab[idx] = tab[idx], tab[i]
+
+
 def main():
-    # test pierwszy
-    elems = [(5, 'A'), (5, 'B'), (7, 'C'), (2, 'D'), (5, 'E'),
-             (1, 'F'), (7, 'G'), (5, 'H'), (1, 'I'), (2, 'J')]
-    t = []
-    for i in elems:
-        t.append(Element(i[1], i[0]))
-    heap1 = Heap(t)
+    elems1 = [(5, 'A'), (5, 'B'), (7, 'C'), (2, 'D'), (5, 'E'),
+              (1, 'F'), (7, 'G'), (5, 'H'), (1, 'I'), (2, 'J')]
+    elems2 = [(5, 'A'), (5, 'B'), (7, 'C'), (2, 'D'), (5, 'E'),
+              (1, 'F'), (7, 'G'), (5, 'H'), (1, 'I'), (2, 'J')]
+
+    numbers1 = [random.randint(0, 100) for _ in range(10000)]
+    numbers2 = numbers1.copy()
+
+    # test pierwszy heap
+
+    t1 = []
+    for i in elems1:
+        t1.append(Element(i[1], i[0]))
+    heap1 = Heap(t1)
     while heap1.peek() is not None:
         heap1.dequeue()
-    print(t)
+    print(t1)
 
-    # test drugi
-    numbers = [random.randint(0, 100) for _ in range(10000)]
-
-    t_start = time.perf_counter()
-    heap2 = Heap(numbers)
+    # test drugi heap
+    t_start1 = time.perf_counter()
+    heap2 = Heap(numbers1)
     while heap2.peek() is not None:
         heap2.dequeue()
-    t_stop = time.perf_counter()
-    print("Czas obliczeń:", "{:.7f}".format(t_stop - t_start))
+    t_stop1 = time.perf_counter()
+    print("Czas obliczeń:", "{:.7f}".format(t_stop1 - t_start1))
+
+    # test pierwszy selection
+    t2 = []
+    for i in elems2:
+        t2.append(Element(i[1], i[0]))
+    selection_sort(t2)
+    print(t2)
+
+    # test drugi selection
+    t_start2 = time.perf_counter()
+    selection_sort(numbers2)
+    t_stop2 = time.perf_counter()
+    print("Czas obliczeń:", "{:.7f}".format(t_stop2 - t_start2))
 
 
 if __name__ == '__main__':
