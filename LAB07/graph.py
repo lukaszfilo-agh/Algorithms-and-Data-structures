@@ -110,15 +110,15 @@ class Graph_List:
         if self.isEmpty():
             self.list = [vertex]
             self.neighbours = {}
-            self.neighbours[vertex] = []
+            self.neighbours[vertex] = {}
         else:
             if vertex not in self.list:
                 self.list.append(vertex)
-                self.neighbours[vertex] = []
+                self.neighbours[vertex] = {}
             else:
                 print('Vertex already in graph')
 
-    def insertEdge(self, vertex1, vertex2, egde=1) -> None:
+    def insertEdge(self, vertex1, vertex2, edge=1) -> None:
         if not self.isEmpty():
             if vertex1 not in self.list:
                 self.insertVertex(vertex1)
@@ -129,25 +129,22 @@ class Graph_List:
             self.insertVertex(vertex2)
 
         if vertex2 not in self.neighbours[vertex1]:
-            self.neighbours[vertex1].append(vertex2)
+            self.neighbours[vertex1][vertex2] = edge
         if vertex1 not in self.neighbours[vertex2]:
-            self.neighbours[vertex2].append(vertex1)
+            self.neighbours[vertex2][vertex1] = edge
 
     def deleteVertex(self, vertex) -> None:
         del (self.neighbours[vertex])
         for v1 in self.neighbours.keys():
-            if vertex in self.neighbours[v1]:
-                idx = self.neighbours[v1].index(vertex)
-                del (self.neighbours[v1][idx])
+            if vertex in self.neighbours[v1].keys():
+                del (self.neighbours[v1][vertex])
 
         idx = self.getVertexIdx(vertex)
         del (self.list[idx])
 
     def deleteEdge(self, vertex1, vertex2) -> None:
-        idx1 = self.neighbours[vertex1].index(vertex2)
-        del (self.neighbours[vertex1][idx1])
-        idx2 = self.neighbours[vertex2].index(vertex1)
-        del (self.neighbours[vertex2][idx2])
+        del (self.neighbours[vertex1][vertex2])
+        del (self.neighbours[vertex2][vertex1])
 
     def getVertexIdx(self, vertex) -> int:
         return self.list.index(vertex)
@@ -169,7 +166,7 @@ def main():
     gl.deleteVertex(Vertex('K'))
     gl.deleteEdge(Vertex('W'), Vertex('E'))
 
-    polska.draw_map(gm.edges())
+    # polska.draw_map(gm.edges())
     polska.draw_map(gl.edges())
 
 
