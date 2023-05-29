@@ -106,41 +106,55 @@ class Graph_Matrix:
         print("-------------------")
 
 
-def ullman(curr, matrix, used, gnp1, pnp2, izomorph):
-    c.append(c[-1] + 1)
+def ullman(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
+    global c
+    c += 1
     if curr == matrix.shape[0]:
-        mul = matrix @ (matrix @ gnp1).T
-        if (pnp2 == mul).all():
+        mul = matrix @ (matrix @ graph1_matrix).T
+        if (graph2_matrix == mul).all():
             izomorph.append(matrix)
         return
     else:
         for i in range(len(matrix[curr])):
             if used[i] is False:
-                used[i] = True
-                matrix[curr][:] = 0
-                matrix[curr][i] = 1
-                ullman(curr + 1, matrix, used, gnp1, pnp2, izomorph)
-                used[i] = False
+                if m0[curr][i] == 1:
+                    used[i] = True
+                    matrix[curr][:] = 0
+                    matrix[curr][i] = 1
+                    ullman(curr + 1, matrix, used, graph1_matrix,
+                           graph2_matrix, izomorph, m0)
+                    used[i] = False
+
+
+def prune(m):
+    raise NotImplementedError
 
 
 def func(g1: Graph_Matrix, g2: Graph_Matrix):
-    gnp1 = np.array(g1.matrix)
-    pnp2 = np.array(g2.matrix)
+    graph1_matrix = np.array(g1.matrix)
+    graph2_matrix = np.array(g2.matrix)
 
-    if gnp1.shape[0] > pnp2.shape[0]:
-        m = np.zeros((pnp2.shape[0], gnp1.shape[0]))
+    if graph1_matrix.shape[0] > graph2_matrix.shape[0]:
+        m = np.zeros((graph2_matrix.shape[0], graph1_matrix.shape[0]))
     else:
-        m = np.zeros((gnp1.shape[0], pnp2.shape[0]))
+        m = np.zeros((graph1_matrix.shape[0], graph2_matrix.shape[0]))
 
     used = [False for _ in range(m.shape[1])]
     izomorph = []
-    ullman(0, m, used, gnp1, pnp2, izomorph)
+    m0 = np.zeros(m.shape)
+    for i in range(graph2_matrix.shape[0]):
+        p_len = np.sum(graph2_matrix[i, :])
+        for j in range(graph1_matrix.shape[0]):
+            g_len = np.sum(graph1_matrix[j, :])
+            if p_len <= g_len:
+                m0[i, j] = 1
+    ullman(0, m, used, graph1_matrix, graph2_matrix, izomorph, m0)
     print(izomorph)
 
 
 def main():
     global c
-    c = [0]
+    c = 0
 
     graph_G = [('A', 'B', 1), ('B', 'F', 1), ('B', 'C', 1),
                ('C', 'D', 1), ('C', 'E', 1), ('D', 'E', 1)]
