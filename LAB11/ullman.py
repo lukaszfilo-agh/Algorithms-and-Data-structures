@@ -106,7 +106,26 @@ class Graph_Matrix:
         print("-------------------")
 
 
-def ullman(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
+def ullman_1(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
+    global c
+    c += 1
+    if curr == matrix.shape[0]:
+        mul = matrix @ (matrix @ graph1_matrix).T
+        if (graph2_matrix == mul).all():
+            izomorph.append(matrix)
+        return
+    else:
+        for i in range(len(matrix[curr])):
+            if used[i] is False:
+                
+                used[i] = True
+                matrix[curr][:] = 0
+                matrix[curr][i] = 1
+                ullman_1(curr + 1, matrix, used, graph1_matrix,
+                           graph2_matrix, izomorph, m0)
+                used[i] = False
+
+def ullman_2(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
     global c
     c += 1
     if curr == matrix.shape[0]:
@@ -121,16 +140,49 @@ def ullman(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
                     used[i] = True
                     matrix[curr][:] = 0
                     matrix[curr][i] = 1
-                    ullman(curr + 1, matrix, used, graph1_matrix,
+                    ullman_2(curr + 1, matrix, used, graph1_matrix,
                            graph2_matrix, izomorph, m0)
                     used[i] = False
 
+def ullman_3(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
+    global c
+    c += 1
+    if curr == matrix.shape[0]:
+        mul = matrix @ (matrix @ graph1_matrix).T
+        if (graph2_matrix == mul).all():
+            izomorph.append(matrix)
+        return
+    else:
+        m0_copy = m0.copy()
+        prune(m0_copy, graph1_matrix, graph2_matrix)
+        for i in range(len(matrix[curr])):
+            if used[i] is False:
+                if m0_copy[curr][i] == 1:
+                    used[i] = True
+                    matrix[curr][:] = 0
+                    matrix[curr][i] = 1
+                    ullman_3(curr + 1, matrix, used, graph1_matrix,
+                           graph2_matrix, izomorph, m0_copy)
+                    used[i] = False
 
-def prune(m):
-    raise NotImplementedError
+
+def prune(m, graph1_matrix, graph2_matrix):
+    change = True
+    while change:
+        change = False
+        for i in range(m.shape[0]):
+            for j in range(m.shape[1]):
+                if m[i, j] == 1:
+                    for v1 in range(graph2_matrix[0].size):
+                        for v2 in range(graph1_matrix[0].size):
+                            if m[v1, v2] == 1:
+                                pass
 
 
-def func(g1: Graph_Matrix, g2: Graph_Matrix):
+
+def func(g1: Graph_Matrix, g2: Graph_Matrix, flag: int):
+    global c
+    c = 0
     graph1_matrix = np.array(g1.matrix)
     graph2_matrix = np.array(g2.matrix)
 
@@ -148,14 +200,17 @@ def func(g1: Graph_Matrix, g2: Graph_Matrix):
             g_len = np.sum(graph1_matrix[j, :])
             if p_len <= g_len:
                 m0[i, j] = 1
-    ullman(0, m, used, graph1_matrix, graph2_matrix, izomorph, m0)
-    print(izomorph)
+    if flag == 1:
+        ullman_1(0, m, used, graph1_matrix, graph2_matrix, izomorph, m0)
+    elif flag == 2:
+        ullman_2(0, m, used, graph1_matrix, graph2_matrix, izomorph, m0)
+    elif flag == 3:
+        ullman_3(0, m, used, graph1_matrix, graph2_matrix, izomorph, m0)
+    return izomorph
 
 
 def main():
     global c
-    c = 0
-
     graph_G = [('A', 'B', 1), ('B', 'F', 1), ('B', 'C', 1),
                ('C', 'D', 1), ('C', 'E', 1), ('D', 'E', 1)]
     graph_P = [('A', 'B', 1), ('B', 'C', 1), ('A', 'C', 1)]
@@ -168,8 +223,14 @@ def main():
         p.insertEdge(Vertex(i[0]), Vertex(i[1]))
     p.printGraph()
 
-    func(g, p)
-    print(c)
+    izomorph1 = func(g, p, 1)
+    print(f'Ullman 1.0: {len(izomorph1)}, {c}')
+
+    izomorph2 = func(g, p, 2)
+    print(f'Ullman 2.0: {len(izomorph2)}, {c}')
+
+    izomorph3 = func(g, p, 3)
+    print(f'Ullman 3.0: {len(izomorph3)}, {c}')
 
 
 if __name__ == "__main__":
