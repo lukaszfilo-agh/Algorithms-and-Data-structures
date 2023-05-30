@@ -1,5 +1,6 @@
 import numpy as np
 from typing import List
+from copy import deepcopy
 
 
 class Vertex:
@@ -108,7 +109,6 @@ class Graph_Matrix:
 
 def ullman_1(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
     global c
-    c += 1
     if curr == matrix.shape[0]:
         mul = matrix @ (matrix @ graph1_matrix).T
         if (graph2_matrix == mul).all():
@@ -117,17 +117,17 @@ def ullman_1(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
     else:
         for i in range(len(matrix[curr])):
             if used[i] is False:
-                
                 used[i] = True
                 matrix[curr][:] = 0
                 matrix[curr][i] = 1
+                c += 1
                 ullman_1(curr + 1, matrix, used, graph1_matrix,
-                           graph2_matrix, izomorph, m0)
+                         graph2_matrix, izomorph, m0)
                 used[i] = False
+
 
 def ullman_2(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
     global c
-    c += 1
     if curr == matrix.shape[0]:
         mul = matrix @ (matrix @ graph1_matrix).T
         if (graph2_matrix == mul).all():
@@ -140,44 +140,54 @@ def ullman_2(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
                     used[i] = True
                     matrix[curr][:] = 0
                     matrix[curr][i] = 1
+                    c += 1
                     ullman_2(curr + 1, matrix, used, graph1_matrix,
-                           graph2_matrix, izomorph, m0)
+                             graph2_matrix, izomorph, m0)
                     used[i] = False
+
 
 def ullman_3(curr, matrix, used, graph1_matrix, graph2_matrix, izomorph, m0):
     global c
-    c += 1
     if curr == matrix.shape[0]:
         mul = matrix @ (matrix @ graph1_matrix).T
         if (graph2_matrix == mul).all():
             izomorph.append(matrix)
         return
     else:
-        m0_copy = m0.copy()
-        prune(m0_copy, graph1_matrix, graph2_matrix)
+        m0_copy = deepcopy(m0)
+        break_flag = False
+        if curr == len(m0_copy) - 1:
+            break_flag = prune(m0_copy, graph1_matrix, graph2_matrix)
         for i in range(len(matrix[curr])):
+            if break_flag:
+                break
             if used[i] is False:
                 if m0_copy[curr][i] == 1:
                     used[i] = True
                     matrix[curr][:] = 0
                     matrix[curr][i] = 1
+                    c += 1
                     ullman_3(curr + 1, matrix, used, graph1_matrix,
-                           graph2_matrix, izomorph, m0_copy)
+                             graph2_matrix, izomorph, m0_copy)
                     used[i] = False
 
 
 def prune(m, graph1_matrix, graph2_matrix):
-    change = True
-    while change:
-        change = False
-        for i in range(m.shape[0]):
-            for j in range(m.shape[1]):
-                if m[i, j] == 1:
-                    for v1 in range(graph2_matrix[0].size):
-                        for v2 in range(graph1_matrix[0].size):
-                            if m[v1, v2] == 1:
-                                pass
-
+    for i in range(m.shape[0]):
+        for j in range(m.shape[1]):
+            izo = True
+            if m[i, j] == 1:
+                for v1 in range(graph2_matrix.shape[0]):
+                    if graph2_matrix[i, v1] != 0 and v1 != i:
+                        for v2 in range(graph1_matrix.shape[0]):
+                            if graph1_matrix[j, v2] != 0 and v2 != j:
+                                if m[v1, v2] == 1:
+                                    izo = False
+                                    break
+                if izo:
+                    m[i, j] = 0
+                    return True
+    return False
 
 
 def func(g1: Graph_Matrix, g2: Graph_Matrix, flag: int):
