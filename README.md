@@ -17,3 +17,5 @@ Repozytorium zawiera wszystkie obowiązkowe i niektóre dodatkowe rozwiązania z
 * LAB08D - Shell Sort and Insertion Sort
 * LAB09 - MST Prim’s Algorithm
 * LAB10 - Maximum Flow Problem Ford-Fulkerson Algorithm
+* LAB11 - Ullman Algorithm
+* LAB12 - Pattern Search
