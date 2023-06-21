@@ -19,3 +19,5 @@ Repozytorium zawiera wszystkie obowiązkowe i niektóre dodatkowe rozwiązania z
 * LAB10 - Maximum Flow Problem Ford-Fulkerson Algorithm
 * LAB11 - Ullman Algorithm
 * LAB12 - Pattern Search
+* LAB13 - Dynamic programming - text
+* LAB14 - Jarvis’ Algorithm
