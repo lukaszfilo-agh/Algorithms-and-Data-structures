@@ -1,4 +1,4 @@
-# ASD
+# Algorithms and Data structures
 
 # Wstęp
 Repozytorium zawiera wszystkie obowiązkowe i niektóre dodatkowe rozwiązania zadań z przedmiotu Algorytmy i Struktury Danych wykonane podczas letniego semestru w roku akademickim 2022/2023. Laboratoria 1-7 zawierają struktury danych, a laboratoria 8-14 algorytmy.
